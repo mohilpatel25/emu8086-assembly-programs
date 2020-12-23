@@ -1,0 +1,45 @@
+DATA1 SEGMENT         
+    ARRAY DB 10H,20H,30H,40H,50H
+    COUNT DB 0ABH
+DATA1 ENDS
+
+DATA2 SEGMENT
+    ARRAY1 DB 60H,70H,80H,90H
+    COUNT1 DB 0CDH    
+DATA2 ENDS
+
+CODE SEGMENT
+    START:
+    ASSUME CS:CODE, DS:DATA1
+    MOV AX,DATA1
+    MOV DS,AX
+    
+    MOV AX,2H               ;IMMEDIATE
+    
+    MOV BX,[0000H]          ;DIRECT
+    
+    MOV BX, OFFSET ARRAY    ;REGISTER INDIRECT
+    MOV DL,[BX]             
+    
+    MOV CL,[BX][01H]        ;RELATIVE BASE
+
+    ASSUME DS:DATA2
+    MOV AX,DATA2
+    MOV DS,AX
+    
+    MOV SI, OFFSET ARRAY1   ;INDEX RELATIVE
+    MOV AL,[SI][01H]    
+    
+    MOV BX,AX               ;INDEX
+    
+    MOV BX, OFFSET ARRAY1   ;BASE INDEX RELATIVE
+    MOV SI,01H
+    MOV CL,[BX][SI][01H]
+    
+    MOV AL,[BX][SI]         ;BASE INDEX
+    
+    MOV AL,[BX][01H]        ;REGISTER RELATIVE
+
+      
+CODE ENDS
+END START
